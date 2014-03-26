@@ -260,7 +260,7 @@ class StormCache {
 			$found=FALSE;
 			foreach ($this->poolConfig as $poolCFG) {
 				for($i=0; $i<count($poolCFG) && !$found; $i++)
-					$found=($poolCFG['serverIP']==$serverIP && $poolCFG['serverPORT']==$serverPort);
+					$found=($poolCFG[$i]['serverIP']==$serverIP && $poolCFG[$i]['serverPORT']==$serverPort);
 				if ($found) break;
 			}
 		}
