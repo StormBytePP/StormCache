@@ -1,0 +1,35 @@
+	You are granted to use, modify and distribute this library in any
+	form, included but not limited to, source code, binary distributions,
+	or any other form as long as you retain this file and LICENSE.txt file in
+	the same folder than this library is located, as well as maintaining
+	library's PHP's file header intact.
+
+	However, if you find this library interesting or it saved you develop
+	time, please consider making a donation (contact with me via my email
+	to get more details).
+
+	Furthermore, if, for any reason you need a special right to allow you
+	to remove this header, drop me an email to discuss the details about it.
+	Please note that, it is strictly forbidden to replace the library ownership to
+	any other than me (except in derived work, see details below), in any way, even
+	if a donation exists.
+
+	Use and Derived Work definition:
+	In terms of this license, there are three terms to be defined:
+		* Use:
+			In terms of this license, the term "Use" refers to library's
+		class instantiation, and any call to any of its functions to perform any
+		operations defined library's operations (even if calls come from derived
+		library, see below)
+		* Derived Work:
+			It is considered derived work, any other library or code that extends,
+			modify or remove any function set to this library, including,
+			but not limited to, extending this class (conforming PHP inheritance),
+			copy/paste or adapt some parts of the code in your own library (or similar), and
+			similar, even, if variable names (or similar) are changed.
+			In this case, your library or code portion will be efectivelly considered
+			a derived work from this library, and must comply with this license.
+			Unless any of the terms above are met, usage of this library in your code will
+			NOT be considered derived work.
+	By using this library, or any portion of it (including the above mentioned "Derived Work"),
+	anywhere, you implicitelly accept the terms of this license.
