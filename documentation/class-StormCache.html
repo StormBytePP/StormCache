@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class StormCache | StormCache</title>
+
+	<script type="text/javascript" src="resources/combined.js?394153670"></script>
+	<script type="text/javascript" src="elementlist.js?4033300125"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li><a href="package-PHP.html">PHP</a>
+						</li>
+				<li class="active"><a href="package-StormCache.html">StormCache</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-StormCache.html">StormCache</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-PoolCantDeleteDefault.html">PoolCantDeleteDefault</a></li>
+				<li><a href="class-PoolItemNotFound.html">PoolItemNotFound</a></li>
+				<li><a href="class-PoolNameConflict.html">PoolNameConflict</a></li>
+				<li><a href="class-PoolNotConnected.html">PoolNotConnected</a></li>
+				<li><a href="class-PoolNotFound.html">PoolNotFound</a></li>
+				<li><a href="class-PoolServerConflict.html">PoolServerConflict</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-StormCache.html" title="Summary of StormCache"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class StormCache</h1>
+
+
+	<div class="description">
+	
+<p>Class for caching data in ram</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-StormCache.html">StormCache</a><br />
+
+				<b>Author:</b>
+				David Carlos Manuelda &lt;<a
+href="mailto:stormbyte&#64;gmail.com">stormbyte&#64;<!---->gmail.com</a>&gt;<br />
+				<b>Version:</b>
+				2.0.0<br />
+		<b>Located at</b> StormCache.php<br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="GetInstance" id="_GetInstance">
+
+		<td class="attributes"><code>
+			 public static
+			<code><a href="class-StormCache.html">StormCache</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_GetInstance">#</a>
+		<code>GetInstance( )</code>
+
+		<div class="description short">
+			
+<p>Get an instance for DB Cache</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get an instance for DB Cache</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-StormCache.html">StormCache</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__destruct" id="___destruct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___destruct">#</a>
+		<code>__destruct( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="CreatePool" id="_CreatePool">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_CreatePool">#</a>
+		<code>CreatePool( <span>string <var>$poolName</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Creates a new pool</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Creates a new pool</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool's Name (case insensitive)</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-PoolNameConflict.html">PoolNameConflict</a></code></code><br />
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="DeletePool" id="_DeletePool">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_DeletePool">#</a>
+		<code>DeletePool( <span>string <var>$poolName</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Deletes a pool (and disconnect it if it was active)</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Deletes a pool (and disconnect it if it was active)</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool name (case insensitive)</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-PoolCantDeleteDefault.html">PoolCantDeleteDefault</a></code></code><br />
+					<code><code><a href="class-PoolNotFound.html">PoolNotFound</a></code></code><br />
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="AddPoolServer" id="_AddPoolServer">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_AddPoolServer">#</a>
+		<code>AddPoolServer( <span>string <var>$serverIP</var></span>, <span>string <var>$serverPort</var></span>, <span>integer <var>$weight</var> = <span class="php-num">0</span></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Adds a pool server</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Adds a pool server</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$serverIP</var></dt>
+					<dd><code>string</code><br>$serverIP Server IP</dd>
+					<dt><var>$serverPort</var></dt>
+					<dd><code>string</code><br>$serverPort Server Port</dd>
+					<dt><var>$weight</var></dt>
+					<dd><code>integer</code><br>$weight The weight of the server relative to the total weight of all the servers
+in the pool. This controls the probability of the server being selected for
+operations. This is used only with consistent distribution option and usually
+corresponds to the amount of memory available to memcache on that server.</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool name</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-PoolNotFound.html">PoolNotFound</a></code></code><br />
+					<code><code><a href="class-PoolServerConflict.html">PoolServerConflict</a></code></code><br />
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="Set" id="_Set">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_Set">#</a>
+		<code>Set( <span>string <var>$key</var></span>, <span>mixed <var>$data</var></span>, <span>string|array|null <var>$namespaces</var> = <span class="php-keyword1">NULL</span></span>, <span>integer <var>$expire</var> = <code><a href="class-StormCache.html#DefaultCacheExpiryTime">StormCache::<b>DefaultCacheExpiryTime</b></a></code></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Sets data (it does not throw any exception to improve code quality when using
+the lib)</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Sets data (it does not throw any exception to improve code quality when using
+the lib)</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key Key</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>mixed</code><br>$data Data</dd>
+					<dt><var>$namespaces</var></dt>
+					<dd><code>string|array|null</code><br>$namespaces Namespace to bind data to (if applicable)</dd>
+					<dt><var>$expire</var></dt>
+					<dd><code>integer</code><br>$expire Expire time seconds if less than 30 days or timestamp if it is greater</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool name to set data to</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="SetMulti" id="_SetMulti">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_SetMulti">#</a>
+		<code>SetMulti( <span>array <var>$items</var></span>, <span>integer <var>$namespaces</var> = <span class="php-keyword1">NULL</span></span>, <span>string <var>$expire</var> = <code><a href="class-StormCache.html#DefaultCacheExpiryTime">StormCache::<b>DefaultCacheExpiryTime</b></a></code></span>, <span>mixed <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Sets multiple data at once</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Sets multiple data at once</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$items</var></dt>
+					<dd><code>array</code><br>$items Items to be added in the form key =&gt; data</dd>
+					<dt><var>$namespaces</var></dt>
+					<dd><code>integer</code><br>$expire Expire time seconds if less than 30 days or timestamp if it is greater</dd>
+					<dt><var>$expire</var></dt>
+					<dd><code>string</code><br>$poolName Pool name to set data to</dd>
+					<dt><var>$poolName</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="Replace" id="_Replace">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_Replace">#</a>
+		<code>Replace( <span>string <var>$key</var></span>, <span>variant <var>$data</var></span>, <span>integer <var>$expire</var> = <code><a href="class-StormCache.html#DefaultCacheExpiryTime">StormCache::<b>DefaultCacheExpiryTime</b></a></code></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Replaces data for cache</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Replaces data for cache</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key Key</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>variant</code><br>$data Data to store</dd>
+					<dt><var>$expire</var></dt>
+					<dd><code>integer</code><br>$expire Expire time seconds if less than 30 days or timestamp if it is greater</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool name to set data to</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="ExpireNamespace" id="_ExpireNamespace">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_ExpireNamespace">#</a>
+		<code>ExpireNamespace( <span>string|array <var>$namespaces</var></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Expires namespaces</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Expires namespaces</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$namespaces</var></dt>
+					<dd><code>string|array</code><br>$namespaces</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool name to expire namespace from</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="Get" id="_Get">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_Get">#</a>
+		<code>Get( <span>string <var>$key</var></span>, <span>mixed <var>&amp; $data</var></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Gets data from pool's cache</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Gets data from pool's cache</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key Key to look data</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>mixed</code><br>&amp;$data Data variable to stored results (passed by reference)</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool Name to look data</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-PoolNotFound.html">PoolNotFound</a></code></code><br />
+					<code><code><a href="class-PoolNotConnected.html">PoolNotConnected</a></code></code><br />
+					<code><code><a href="class-PoolItemNotFound.html">PoolItemNotFound</a></code></code><br />
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="Flush" id="_Flush">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_Flush">#</a>
+		<code>Flush( <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Flush all data from cache</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Flush all data from cache</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool Name to look data</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="Delete" id="_Delete">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_Delete">#</a>
+		<code>Delete( <span>string <var>$key</var></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Deletes a stored key data</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Deletes a stored key data</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool Name to look data</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="DeleteMulti" id="_DeleteMulti">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_DeleteMulti">#</a>
+		<code>DeleteMulti( <span>string[] <var>$keys</var></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Deletes multiple items in cache</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Deletes multiple items in cache</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$keys</var></dt>
+					<dd><code>string[]</code><br>$keys Keys to delete</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool Name to look data</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="Touch" id="_Touch">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_Touch">#</a>
+		<code>Touch( <span>string <var>$key</var></span>, <span>integer <var>$expire</var></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Touch data (sets new expiration time)</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Touch data (sets new expiration time)</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key Key to be affected</dd>
+					<dt><var>$expire</var></dt>
+					<dd><code>integer</code><br>$expire Expire time seconds if less than 30 days or timestamp if it is greater</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool name</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="TouchMulti" id="_TouchMulti">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_TouchMulti">#</a>
+		<code>TouchMulti( <span>string[] <var>$keys</var></span>, <span>integer <var>$expire</var></span>, <span>string <var>$poolName</var> = <code><a href="class-StormCache.html#DefaultPoolName">StormCache::<b>DefaultPoolName</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Touch multiple data (sets new expiration time)</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Touch multiple data (sets new expiration time)</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$keys</var></dt>
+					<dd><code>string[]</code><br>$keys Keys to be affected</dd>
+					<dt><var>$expire</var></dt>
+					<dd><code>integer</code><br>$expire Expire time seconds if less than 30 days or timestamp if it is greater</dd>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool name</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="GetPoolStats" id="_GetPoolStats">
+
+		<td class="attributes"><code>
+			 public 
+			array|null
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_GetPoolStats">#</a>
+		<code>GetPoolStats( <span>string <var>$poolName</var> = <span class="php-keyword1">NULL</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Gets pool stats</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Gets pool stats</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$poolName</var></dt>
+					<dd><code>string</code><br>$poolName Pool Name to get stats</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array|null</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="GetCacheHits" id="_GetCacheHits">
+
+		<td class="attributes"><code>
+			 public static
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_GetCacheHits">#</a>
+		<code>GetCacheHits( )</code>
+
+		<div class="description short">
+			
+<p>Gets cache hits</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Gets cache hits</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>integer</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="GetCacheMisses" id="_GetCacheMisses">
+
+		<td class="attributes"><code>
+			 public static
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_GetCacheMisses">#</a>
+		<code>GetCacheMisses( )</code>
+
+		<div class="description short">
+			
+<p>Gets cache misses</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Gets cache misses</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>integer</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+	<table class="summary" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="DefaultCacheExpiryTime" id="DefaultCacheExpiryTime">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+<b>DefaultCacheExpiryTime</b>		</code></td>
+		<td class="value"><code><span class="php-num">432000</span></code></td>
+		<td class="description"><div>
+			<a href="#DefaultCacheExpiryTime" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="DefaultPoolName" id="DefaultPoolName">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name"><code>
+<b>DefaultPoolName</b>		</code></td>
+		<td class="value"><code><span class="php-quote">&quot;default&quot;</span></code></td>
+		<td class="description"><div>
+			<a href="#DefaultPoolName" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		StormCache API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>
