@@ -138,7 +138,7 @@ class PoolNotConnected extends Exception {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.0.0
+ * @version	2.0.1
  */
 class StormCache {
 	const DefaultCacheExpiryTime	= 432000; //5 days
@@ -282,14 +282,17 @@ class StormCache {
 	 * @param string|array|NULL $namespaces Namespace to bind data to (if applicable)
 	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
 	 * @param string $poolName Pool name to set data to
+	 * @return bool TRUE if it was stored, FALSE on error
 	 */
 	public function Set($key, $data, $namespaces=NULL, $expire=self::DefaultCacheExpiryTime, $poolName=self::DefaultPoolName) {
+		$result=FALSE;
 		if ($this->IsPoolConnected($poolName)) {
 			$this->Lock($namespaces, $poolName);
-			$this->SetData($key, $data, $expire, $poolName);
+			$result=$this->SetData($key, $data, $expire, $poolName);
 			$this->AddNamespaceStoredKey($namespaces, $key, $poolName);
 			$this->UnLock($namespaces, $poolName);
 		}
+		return $result;
 	}
 	
 	/**
@@ -297,14 +300,17 @@ class StormCache {
 	 * @param array $items Items to be added in the form key => data
 	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
 	 * @param string $poolName Pool name to set data to
+	 * @return bool Result operation
 	 */
 	public function SetMulti($items, $namespaces=NULL, $expire=self::DefaultCacheExpiryTime, $poolName=self::DefaultPoolName) {
+		$result=FALSE;
 		if ($this->IsPoolConnected($poolName)) {
 			$this->Lock($namespaces, $poolName);
-			$this->SetData($key, $data, $expire, $poolName);
+			$result=$this->SetDataMulti($key, $data, $expire, $poolName);
 			$this->AddNamespaceStoredKey($namespaces, $key, $poolName);
 			$this->UnLock($namespaces, $poolName);
 		}
+		return $result;
 	}
 	
 	/**
@@ -313,10 +319,11 @@ class StormCache {
 	 * @param variant $data Data to store
 	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
 	 * @param string $poolName Pool name to set data to
+	 * @return bool Operation Result (if FALSE, then, data was NOT stored)
 	 */
 	private function SetData($key, $data, $expire, $poolName) {
 		$pn=  strtolower($poolName);
-		$this->resource["$pn"]->set($key, $data, (int)$expire);
+		return $this->resource["$pn"]->set($key, $data, (int)$expire);
 	}
 	
 	/**
@@ -324,10 +331,11 @@ class StormCache {
 	 * @param array $items Items to be added in the form key => data
 	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
 	 * @param string $poolName Pool name to set data to
+	 * @result Result Operation
 	 */
 	private function SetDataMulti($items, $expire, $poolName) {
 		$pn=  strtolower($poolName);
-		$this->resource["$pn"]->setMulti($items, (int)$expire);
+		return $this->resource["$pn"]->setMulti($items, (int)$expire);
 	}
 
 	/**
@@ -336,11 +344,12 @@ class StormCache {
 	 * @param variant $data Data to store
 	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
 	 * @param string $poolName Pool name to set data to
+	 * @return bool Operation Status
 	 */
 	public function Replace($key, $data, $expire = self::DefaultCacheExpiryTime, $poolName=self::DefaultPoolName) {
 		if ($this->IsPoolConnected($poolName)) {
 			$pn=  strtolower($poolName);
-			$this->resource["$pn"]->replace($key, $data, $expire);
+			return $this->resource["$pn"]->replace($key, $data, $expire);
 		}
 	}
 
