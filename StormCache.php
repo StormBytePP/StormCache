@@ -519,24 +519,30 @@ class StormCache {
 	 * Deletes a stored key data
 	 * @param string $key 
 	 * @param string $poolName Pool Name to look data
+	 * @return bool Operation Status
 	 */
 	public function Delete($key, $poolName=self::DefaultPoolName) {
+		$result=FALSE;
 		if ($this->IsPoolConnected($poolName)) {
 			$pn=  strtolower($poolName);
-			$this->resource["$pn"]->delete($key);
+			$result=$this->resource["$pn"]->delete($key);
 		}
+		return $result;
 	}
 	
 	/**
 	 * Deletes multiple items in cache
 	 * @param string[] $keys Keys to delete 
 	 * @param string $poolName Pool Name to look data
+	 * @return bool Operation Status
 	 */
 	public function DeleteMulti($keys, $poolName=self::DefaultPoolName) {
+		$result=FALSE;
 		if ($this->IsPoolConnected($poolName)) {
 			$pn=  strtolower($poolName);
-			$this->resource["$pn"]->deleteMulti($keys);
+			$result=$this->resource["$pn"]->deleteMulti($keys);
 		}
+		return $result;
 	}
 	
 	/**
@@ -544,12 +550,15 @@ class StormCache {
 	 * @param string $key Key to be affected
 	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
 	 * @param string $poolName Pool name
+	 * @return bool Operation Status
 	 */
 	public function Touch($key, $expire, $poolName=self::DefaultPoolName) {
+		$result=FALSE;
 		if ($this->IsPoolConnected($poolName)) {
 			$pn=  strtolower($poolName);
-			$this->resource["$pn"]->touch($key, (int)$expire);
+			$result=$this->resource["$pn"]->touch($key, (int)$expire);
 		}
+		return $result;
 	}
 	
 	/**
@@ -557,11 +566,14 @@ class StormCache {
 	 * @param string[] $keys Keys to be affected
 	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
 	 * @param string $poolName Pool name
+	 * @return bool Operation Status
 	 */
 	public function TouchMulti($keys, $expire, $poolName=self::DefaultPoolName) {
+		$result=TRUE;
 		foreach ($keys as $key) {
-			$this->Touch($key, $expire, $poolName);
+			$result&=$this->Touch($key, $expire, $poolName);
 		}
+		return $result;
 	}
 	
 	/**
