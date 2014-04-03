@@ -7,7 +7,7 @@
 	<title>Package StormCache | StormCache</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?4033300125"></script>
+	<script type="text/javascript" src="elementlist.js?2066687724"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -21,8 +21,6 @@
 		<div id="groups">
 			<h3>Packages</h3>
 			<ul>
-				<li><a href="package-PHP.html">PHP</a>
-						</li>
 				<li class="active"><a href="package-StormCache.html">StormCache</a>
 						</li>
 			</ul>
@@ -34,19 +32,20 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-MemcachedPool.html">MemcachedPool</a></li>
 				<li><a href="class-StormCache.html">StormCache</a></li>
+				<li><a href="class-StormCachePool.html">StormCachePool</a></li>
 			</ul>
 
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-PoolCantDeleteDefault.html">PoolCantDeleteDefault</a></li>
+				<li><a href="class-CacheNotEnabled.html">CacheNotEnabled</a></li>
 				<li><a href="class-PoolItemNotFound.html">PoolItemNotFound</a></li>
 				<li><a href="class-PoolNameConflict.html">PoolNameConflict</a></li>
-				<li><a href="class-PoolNotConnected.html">PoolNotConnected</a></li>
+				<li><a href="class-PoolNoServersConfigured.html">PoolNoServersConfigured</a></li>
 				<li><a href="class-PoolNotFound.html">PoolNotFound</a></li>
-				<li><a href="class-PoolServerConflict.html">PoolServerConflict</a></li>
 			</ul>
 
 
@@ -92,8 +91,17 @@
 <table class="summary" id="classes">
 <caption>Classes summary</caption>
 <tr>
+	<td class="name"><a href="class-MemcachedPool.html">MemcachedPool</a></td>
+	<td>Abstract class for handling memcached functions
+<!-- by Texy2! --></td>
+</tr>
+<tr>
 	<td class="name"><a href="class-StormCache.html">StormCache</a></td>
 	<td>Class for caching data in ram</td>
+</tr>
+<tr>
+	<td class="name"><a href="class-StormCachePool.html">StormCachePool</a></td>
+	<td>Class for handling StormCache Pool</td>
 </tr>
 </table>
 
@@ -102,8 +110,8 @@
 <table class="summary" id="exceptions">
 <caption>Exceptions summary</caption>
 <tr>
-	<td class="name"><a href="class-PoolCantDeleteDefault.html">PoolCantDeleteDefault</a></td>
-	<td>Exception Class for can't delete default pool</td>
+	<td class="name"><a href="class-CacheNotEnabled.html">CacheNotEnabled</a></td>
+	<td>Exception Class for cache not enabled</td>
 </tr>
 <tr>
 	<td class="name"><a href="class-PoolItemNotFound.html">PoolItemNotFound</a></td>
@@ -114,16 +122,12 @@
 	<td>Exception Class for handling a pool name conflict</td>
 </tr>
 <tr>
-	<td class="name"><a href="class-PoolNotConnected.html">PoolNotConnected</a></td>
+	<td class="name"><a href="class-PoolNoServersConfigured.html">PoolNoServersConfigured</a></td>
 	<td>Exception Class for a pool not connected</td>
 </tr>
 <tr>
 	<td class="name"><a href="class-PoolNotFound.html">PoolNotFound</a></td>
 	<td>Exception Class for pool not found</td>
-</tr>
-<tr>
-	<td class="name"><a href="class-PoolServerConflict.html">PoolServerConflict</a></td>
-	<td>Exception Class for handling a pool server conflict</td>
 </tr>
 </table>
 

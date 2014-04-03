@@ -4,10 +4,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="generator" content="ApiGen 2.8.0" />
 
-	<title>Class PoolServerConflict | StormCache</title>
+	<title>Class PoolNoServersConfigured | StormCache</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?4033300125"></script>
+	<script type="text/javascript" src="elementlist.js?2066687724"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -21,8 +21,6 @@
 		<div id="groups">
 			<h3>Packages</h3>
 			<ul>
-				<li><a href="package-PHP.html">PHP</a>
-						</li>
 				<li class="active"><a href="package-StormCache.html">StormCache</a>
 						</li>
 			</ul>
@@ -34,19 +32,20 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-MemcachedPool.html">MemcachedPool</a></li>
 				<li><a href="class-StormCache.html">StormCache</a></li>
+				<li><a href="class-StormCachePool.html">StormCachePool</a></li>
 			</ul>
 
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-PoolCantDeleteDefault.html">PoolCantDeleteDefault</a></li>
+				<li><a href="class-CacheNotEnabled.html">CacheNotEnabled</a></li>
 				<li><a href="class-PoolItemNotFound.html">PoolItemNotFound</a></li>
 				<li><a href="class-PoolNameConflict.html">PoolNameConflict</a></li>
-				<li><a href="class-PoolNotConnected.html">PoolNotConnected</a></li>
+				<li class="active"><a href="class-PoolNoServersConfigured.html">PoolNoServersConfigured</a></li>
 				<li><a href="class-PoolNotFound.html">PoolNotFound</a></li>
-				<li class="active"><a href="class-PoolServerConflict.html">PoolServerConflict</a></li>
 			</ul>
 
 
@@ -86,25 +85,24 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Class PoolServerConflict</h1>
+	<h1>Class PoolNoServersConfigured</h1>
 
 
 	<div class="description">
 	
-<p>Exception Class for handling a pool server conflict</p>
+<p>Exception Class for a pool not connected</p>
 
 	</div>
 
 	<dl class="tree">
 		<dd style="padding-left:0px">
-			<a href="class-Exception.html"><span>Exception</span></a>
-			
+Exception
 			
 			
 		</dd>
 		<dd style="padding-left:30px">
 			<img src="resources/inherit.png" alt="Extended by" />
-<b><span>PoolServerConflict</span></b>			
+<b><span>PoolNoServersConfigured</span></b>			
 			
 			
 		</dd>
@@ -127,8 +125,8 @@
 				David Carlos Manuelda &lt;<a
 href="mailto:stormbyte&#64;gmail.com">stormbyte&#64;<!---->gmail.com</a>&gt;<br />
 				<b>Version:</b>
-				2.0.0<br />
-		<b>Located at</b> StormCache.php<br />
+				2.1.0<br />
+		<b>Located at</b> StormCacheInternals.php<br />
 	</div>
 
 
@@ -146,7 +144,7 @@ href="mailto:stormbyte&#64;gmail.com">stormbyte&#64;<!---->gmail.com</a>&gt;<br 
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code>__construct( <span>mixed <var>$serverIP</var></span>, <span>mixed <var>$serverPORT</var></span> )</code>
+		<code>__construct( <span>mixed <var>$poolName</var></span> )</code>
 
 		<div class="description short">
 			
@@ -161,7 +159,7 @@ href="mailto:stormbyte&#64;gmail.com">stormbyte&#64;<!---->gmail.com</a>&gt;<br 
 
 
 				<h4>Overrides</h4>
-				<div class="list"><code><a href="class-Exception.html#___construct">Exception::__construct()</a></code></div>
+				<div class="list"><code>Exception::__construct()</code></div>
 
 		</div>
 		</div></td>
@@ -169,17 +167,17 @@ href="mailto:stormbyte&#64;gmail.com">stormbyte&#64;<!---->gmail.com</a>&gt;<br 
 	</table>
 
 	<table class="summary inherited">
-	<caption>Methods inherited from <a href="class-Exception.html#methods">Exception</a></caption>
+	<caption>Methods inherited from Exception</caption>
 	<tr>
 		<td><code>
-			<a href="class-Exception.html#___toString">__toString()</a>, 
-			<a href="class-Exception.html#_getCode">getCode()</a>, 
-			<a href="class-Exception.html#_getFile">getFile()</a>, 
-			<a href="class-Exception.html#_getLine">getLine()</a>, 
-			<a href="class-Exception.html#_getMessage">getMessage()</a>, 
-			<a href="class-Exception.html#_getPrevious">getPrevious()</a>, 
-			<a href="class-Exception.html#_getTrace">getTrace()</a>, 
-			<a href="class-Exception.html#_getTraceAsString">getTraceAsString()</a>
+__toString(), 
+getCode(), 
+getFile(), 
+getLine(), 
+getMessage(), 
+getPrevious(), 
+getTrace(), 
+getTraceAsString()
 		</code></td>
 	</tr>
 	</table>
@@ -195,17 +193,6 @@ href="mailto:stormbyte&#64;gmail.com">stormbyte&#64;<!---->gmail.com</a>&gt;<br 
 
 
 
-	<table class="summary inherited">
-	<caption>Properties inherited from <a href="class-Exception.html#properties">Exception</a></caption>
-	<tr>
-		<td><code>
-			<a href="class-Exception.html#$code"><var>$code</var></a>, 
-			<a href="class-Exception.html#$file"><var>$file</var></a>, 
-			<a href="class-Exception.html#$line"><var>$line</var></a>, 
-			<a href="class-Exception.html#$message"><var>$message</var></a>
-		</code></td>
-	</tr>
-	</table>
 
 
 
