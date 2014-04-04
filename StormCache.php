@@ -115,8 +115,9 @@ class StormCache {
 	 * @param string $poolNAME Pool Name (if not specified, default pool is selected)
 	 */
 	public function AddPoolServer($serverIP, $serverPORT, $serverWEIGHT, $poolNAME=self::DefaultPoolName) {
-		if (!array_key_exists($poolNAME, $this->pools)) throw new PoolNotFound($poolNAME);
-		$this->pools["$poolNAME"]->AddServer($serverIP, $serverPORT, $serverWEIGHT);
+		$lower=  strtolower($poolNAME);
+		if (!array_key_exists($lower, $this->pools)) throw new PoolNotFound($poolNAME);
+		$this->pools["$lower"]->AddServer($serverIP, $serverPORT, $serverWEIGHT);
 	}
 	
 	/**
