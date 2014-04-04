@@ -384,9 +384,11 @@ class StormCache {
 	 * @throws MCryptNotInstalled When MCrypt is not installed/supported
 	 */
 	public function SetEncryptionPassword($password) {
-		if(function_exists("mcrypt_create_iv") && function_exists("mcrypt_encrypt") && function_exists("mcrypt_decrypt"))
-			$this->encryptPassword=$password;
-		else throw new MCryptNotInstalled();
+		if (!empty($password)) {
+			if(function_exists("mcrypt_create_iv") && function_exists("mcrypt_encrypt") && function_exists("mcrypt_decrypt"))
+				$this->encryptPassword=$password;
+			else throw new MCryptNotInstalled();
+		}
 	}
 	
 	/**
