@@ -14,6 +14,7 @@
 	- PECL-Memcached (To make use of memcache's features, it will not
 		be required in case you don't configure any pool's server, so it is
 		safe to use the library even if PECL-Memcached is not installed. )
+	- MCrypt support (optional, for encrypting features)
  */
 /** License:
 	You are granted to use, modify and distribute this library in any
@@ -80,10 +81,17 @@ class StormCache {
 	private static $_instance=NULL;
 	
 	/**
+	 * Encrypt password
+	 * @var string
+	 */
+	private $encryptPassword;
+	
+	/**
 	 * Creates a new StormCache object
 	 */
 	private function __construct() {
 		$this->pools=array();
+		$this->encryptPassword="";
 		$this->AddPool(self::DefaultPoolName);
 	}
 	
@@ -138,6 +146,11 @@ class StormCache {
 		$tmp=FALSE;
 		$this->pools["$lowername"]->Get($key, $tmp);
 		if ($tmp===FALSE) throw new PoolItemNotFound($key);
+		//Check encryption
+		if ($this->IsEncryptionEnabled()) {
+			$tmp=$this->DecryptData($tmp);
+			if ($tmp===FALSE) throw new PoolItemDecryptFailed($key);
+		}
 		$data=$tmp;
 	}
 	
@@ -154,6 +167,7 @@ class StormCache {
 		$result=FALSE;
 		$lowername=  strtolower($poolNAME);
 		if (array_key_exists($lowername, $this->pools)) {
+			if ($this->IsEncryptionEnabled()) $data=$this->EncryptData($data);
 			$result=$this->pools["$lowername"]->Set($key, $data, $namespaces, $expire);
 		}
 		return $result;
@@ -170,6 +184,7 @@ class StormCache {
 		$result=FALSE;
 		$lowername=  strtolower($poolNAME);
 		if (array_key_exists($poolNAME, $this->pools)) {
+			if ($this->IsEncryptionEnabled()) $data=$this->EncryptData($data);
 			$result=$this->pools["$lowername"]->SetMulti($items, $expire);
 		}
 		return $result;
@@ -186,6 +201,7 @@ class StormCache {
 		$result=FALSE;
 		$lowername=  strtolower($poolNAME);
 		if (!array_key_exists($lowername, $this->pools)) {
+			if ($this->IsEncryptionEnabled()) $data=$this->EncryptData($data);
 			$result=$this->pools["$lowername"]->Replace($key, $data, $expire);
 		}
 		return $result;
@@ -353,6 +369,62 @@ class StormCache {
 		$result=FALSE;
 		foreach ($this->pools as $pool) {
 			$result|=$pool->IsEnabled();
+		}
+		return $result;
+	}
+	
+	/**
+	 * Sets encryption password
+	 * @param string $password
+	 */
+	public function SetEncryptionPassword($password) {
+		$this->encryptPassword=$password;
+	}
+	
+	/**
+	 * Is encryption enabled?
+	 * @return bool
+	 */
+	public function IsEncryptionEnabled() {
+		return !empty($this->encryptPassword);
+	}
+	
+	/**
+	 * Encrypts data
+	 * @param mixed $data
+	 * @return string|FALSE base64 data if encryption enabled or false if not
+	 */
+	private function EncryptData($data) {
+		$result=FALSE;
+		if ($this->IsEncryptionEnabled()) {
+			$serializedData=  serialize($data);
+			$IV=  mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC));
+			$dataHash=hash("SHA256", $serializedData);
+			$cryptedData=  mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->encryptPassword, "$dataHash$serializedData", MCRYPT_MODE_CBC, $IV);
+			$result=  base64_encode("$IV$cryptedData");
+		}
+		return $result;
+	}
+	
+	/**
+	 * Decrypts data
+	 * @param string $data Base64 data
+	 * @return mixed|FALSE Data if success or FALSE if error
+	 */
+	private function DecryptData($data) {
+		$result=FALSE;
+		//First we check if we have all data needed:
+		// IV size:		32
+		// HASH size:	64
+		$data=  base64_decode($data);
+		if (strlen($data)>32) {
+			$IV=  substr($data, 0, 32);
+			$decryptedData=  mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->encryptPassword, substr($data, 32), MCRYPT_MODE_CBC, $IV);
+			if (strlen($decryptedData)>64) {
+				$origHash=  substr($decryptedData, 0, 64);
+				$plainData=  rtrim(substr($decryptedData, 64), chr(0));
+				if ($origHash==hash("SHA256", $plainData)) $result=  unserialize($plainData);
+			}
 		}
 		return $result;
 	}

@@ -15,6 +15,7 @@
 	- PECL-Memcached (To make use of memcache's features, it will not
 		be required in case you don't configure any pool's server, so it is
 		safe to use the library even if PECL-Memcached is not installed. )
+	- MCrypt support (optional, for encrypting features)
  */
 /** License:
 	You are granted to use, modify and distribute this library in any
@@ -437,6 +438,19 @@ class PoolItemNotFound extends Exception {
 }
 
 /**
+ * Exception Class for items not decrypted correctly
+ *
+ * @author	David Carlos Manuelda <stormbyte@gmail.com>
+ * @package StormCache
+ * @version	2.1.0
+ */
+class PoolItemDecryptFailed extends Exception {
+	public function __construct($keyname) {
+		parent::__construct("Item $keyname can't be decrypted correctly (wrong password or insufficient data)");
+	}
+}
+
+/**
  * Exception Class for pool not found
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
@@ -485,6 +499,19 @@ class PoolNoServersConfigured extends Exception {
 class CacheNotEnabled extends Exception {
 	public function __construct() {
 		parent::__construct("Cache is not enabled");
+	}
+}
+
+/**
+ * Exception Class for MCrypt not installed
+ *
+ * @author	David Carlos Manuelda <stormbyte@gmail.com>
+ * @package StormCache
+ * @version	2.1.0
+ */
+class MCryptNotInstalled extends Exception {
+	public function __construct() {
+		parent::__construct("MCrypt support is not installed");
 	}
 }
 
