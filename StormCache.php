@@ -116,7 +116,7 @@ class StormCache {
 	 */
 	public function AddPoolServer($serverIP, $serverPORT, $serverWEIGHT, $poolNAME=self::DefaultPoolName) {
 		if (!array_key_exists($poolNAME, $this->pools)) throw new PoolNotFound($poolNAME);
-		$this->pools["$poolNAME"]->AddServer($serverIP, $serverPort, $serverWEIGHT);
+		$this->pools["$poolNAME"]->AddServer($serverIP, $serverPORT, $serverWEIGHT);
 	}
 	
 	/**
@@ -134,7 +134,7 @@ class StormCache {
 		if (!$this->IsEnabled()) throw new CacheNotEnabled();
 		if (!array_key_exists($lowername, $this->pools)) throw new PoolNotFound($lowername);
 		if (!$this->pools["$lowername"]->IsEnabled()) throw new PoolNoServersConfigured($lowername);
-		$tmp=NULL;
+		$tmp=FALSE;
 		$this->pools["$lowername"]->Get($key, $tmp);
 		if ($tmp===FALSE) throw new PoolItemNotFound($key);
 		$data=$tmp;
@@ -149,7 +149,7 @@ class StormCache {
 	 * @param string $poolNAME Pool Name (if not specified, default pool is selected)
 	 * @return bool Operation Status
 	 */
-	public function Set($key, $data, $namespaces=NULL, $expire, $poolNAME=self::DefaultPoolName) {
+	public function Set($key, $data, $namespaces=NULL, $expire=StormCachePool::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
 		$result=FALSE;
 		$lowername=  strtolower($poolNAME);
 		if (array_key_exists($lowername, $this->pools)) {
@@ -260,7 +260,7 @@ class StormCache {
 	 * @param string $poolNAME Pool Name (if not specified, default pool is selected) 
 	 * @return bool Operation Status
 	 */
-	public function Touch($key, $expire, $poolNAME=self::DefaultPoolName) {
+	public function Touch($key, $expire=StormCachePool::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
 		$result=FALSE;
 		$lower=  strtolower($poolNAME);
 		if (array_key_exists($lower, $this->pools)) {
@@ -276,7 +276,7 @@ class StormCache {
 	 * @param string $poolNAME Pool Name (if not specified, default pool is selected) 
 	 * @return bool Operation Status
 	 */
-	public function TouchMulti($keys, $expire, $poolNAME=self::DefaultPoolName) {
+	public function TouchMulti($keys, $expire=StormCachePool::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
 		$result=FALSE;
 		$lower=  strtolower($poolNAME);
 		if (array_key_exists($lower, $this->pools)) {
