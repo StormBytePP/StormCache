@@ -380,7 +380,7 @@ class StormCache {
 	
 	/**
 	 * Set encryption password (and implicitelly enable encryption features)
-	 * @param string $password Password for encrypting
+	 * @param string $password Password for encrypting (if empty, it will NOT enable encryption)
 	 * @throws MCryptNotInstalled When MCrypt is not installed/supported
 	 */
 	public function SetEncryptionPassword($password) {
