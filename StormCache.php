@@ -408,7 +408,7 @@ class StormCache {
 		$result=FALSE;
 		if ($this->IsEncryptionEnabled()) {
 			$serializedData=  serialize($data);
-			$IV=  mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC));
+			$IV=  mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);
 			$dataHash=hash("SHA256", $serializedData);
 			$cryptedData=  mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->encryptPassword, "$dataHash$serializedData", MCRYPT_MODE_CBC, $IV);
 			$result=  "ENCRYPTED".base64_encode("$IV$cryptedData");
