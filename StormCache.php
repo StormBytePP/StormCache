@@ -148,9 +148,11 @@ class StormCache {
 		if ($tmp===FALSE) throw new PoolItemNotFound($key);
 		//Check encryption
 		if ($this->IsEncryptionEnabled()) {
+			if (substr($tmp, 0, 9)!="ENCRYPTED") throw new PoolItemNotEncrypted($key);
 			$tmp=$this->DecryptData($tmp);
 			if ($tmp===FALSE) throw new PoolItemDecryptFailed($key);
 		}
+		else if (substr($tmp, 0, 9)=="ENCRYPTED") throw new PoolItemEncrypted($key);
 		$data=$tmp;
 	}
 	
@@ -180,7 +182,7 @@ class StormCache {
 	 * @param string $poolNAME Pool Name (if not specified, default pool is selected)
 	 * @return bool Operation Status
 	 */
-	public function SetMulti($items, $expire=self::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
+	public function SetMulti($items, $expire=StormCachePool::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
 		$result=FALSE;
 		$lowername=  strtolower($poolNAME);
 		if (array_key_exists($poolNAME, $this->pools)) {
@@ -197,7 +199,7 @@ class StormCache {
 	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
 	 * @param string $poolNAME Pool Name (if not specified, default pool is selected)
 	 */
-	public function Replace($key, $data, $expire = self::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
+	public function Replace($key, $data, $expire=StormCachePool::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
 		$result=FALSE;
 		$lowername=  strtolower($poolNAME);
 		if (!array_key_exists($lowername, $this->pools)) {
@@ -401,7 +403,7 @@ class StormCache {
 			$IV=  mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC));
 			$dataHash=hash("SHA256", $serializedData);
 			$cryptedData=  mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->encryptPassword, "$dataHash$serializedData", MCRYPT_MODE_CBC, $IV);
-			$result=  base64_encode("$IV$cryptedData");
+			$result=  "ENCRYPTED".base64_encode("$IV$cryptedData");
 		}
 		return $result;
 	}
@@ -414,16 +416,19 @@ class StormCache {
 	private function DecryptData($data) {
 		$result=FALSE;
 		//First we check if we have all data needed:
-		// IV size:		32
-		// HASH size:	64
-		$data=  base64_decode($data);
-		if (strlen($data)>32) {
-			$IV=  substr($data, 0, 32);
-			$decryptedData=  mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->encryptPassword, substr($data, 32), MCRYPT_MODE_CBC, $IV);
-			if (strlen($decryptedData)>64) {
-				$origHash=  substr($decryptedData, 0, 64);
-				$plainData=  rtrim(substr($decryptedData, 64), chr(0));
-				if ($origHash==hash("SHA256", $plainData)) $result=  unserialize($plainData);
+		// HEADER "ENCRYPTED" size:	9
+		// IV size:					32
+		// HASH size:				64
+		if (strlen($data)>9) {
+			$data=  base64_decode(substr($data, 9));
+			if (strlen($data)>32) {
+				$IV=  substr($data, 0, 32);
+				$decryptedData=  mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->encryptPassword, substr($data, 32), MCRYPT_MODE_CBC, $IV);
+				if (strlen($decryptedData)>64) {
+					$origHash=  substr($decryptedData, 0, 64);
+					$plainData=  rtrim(substr($decryptedData, 64), chr(0));
+					if ($origHash==hash("SHA256", $plainData)) $result=  unserialize($plainData);
+				}
 			}
 		}
 		return $result;

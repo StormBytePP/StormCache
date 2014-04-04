@@ -451,6 +451,32 @@ class PoolItemDecryptFailed extends Exception {
 }
 
 /**
+ * Exception Class for items encrypted but encryption is disabled
+ *
+ * @author	David Carlos Manuelda <stormbyte@gmail.com>
+ * @package StormCache
+ * @version	2.1.0
+ */
+class PoolItemEncrypted extends Exception {
+	public function __construct($keyname) {
+		parent::__construct("Item $keyname is encrypted but encryption is disabled");
+	}
+}
+
+/**
+ * Exception Class for items not encrypted but encryption is enabled
+ *
+ * @author	David Carlos Manuelda <stormbyte@gmail.com>
+ * @package StormCache
+ * @version	2.1.0
+ */
+class PoolItemNotEncrypted extends Exception {
+	public function __construct($keyname) {
+		parent::__construct("Item $keyname is not encrypted but encryption is enabled");
+	}
+}
+
+/**
  * Exception Class for pool not found
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
