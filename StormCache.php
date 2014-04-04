@@ -137,6 +137,9 @@ class StormCache {
 	 * @throws PoolNotFound When specified pool is not found
 	 * @throws PoolNoServersConfigured When selected pool have no servers
 	 * @throws PoolItemNotFound When item have NOT been found
+	 * @throws PoolItemNotEncrypted When item is not encrypted but encryption is enabled
+	 * @throws PoolItemDecryptFailed When encryption failed
+	 * @throws PoolItemEncrypted When item was encrypted but encryption is disabled
 	 */
 	public function Get($key, &$data, $poolNAME=self::DefaultPoolName) {
 		$lowername=  strtolower($poolNAME);
