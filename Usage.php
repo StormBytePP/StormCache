@@ -2,6 +2,20 @@
 
 /******* USAGE EXAMPLE WITH COMMENTS *********/
 
+/** BENEFITS:
+ * This library uses late resource instantiation technique,
+ * like instantiating Memcached resource only when you add servers
+ * to a pool.
+ * Also, it supports encryption with MCrypt, and it only uses it when you
+ * configure a password (it will throw an exception if MCrypt is not installed)
+ * This way, you are safe to use this library, and your code becomes portable
+ * even if destination servers does not have memcached or mcrypt installed!
+ * 
+ * Like mentioned before, you can safelly disable cache by commenting the lines
+ * in which you add servers to pools to completelly disable memcached, without
+ * modifying any part of your code, and without having further errors (see get
+ * examples)
+ */
 // Requiring library file
 require_once 'StormCache.php';
 
