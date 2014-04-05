@@ -17,7 +17,7 @@ $cache->AddPoolServer("127.0.0.1", 11211);
 
 // Creating another pool
 $userPoolName="User Important Data";
-$cache->CreatePool($userPoolName);
+$cache->AddPool($userPoolName);
 
 // Configuring newly created pool
 $cache->AddPoolServer("127.0.0.1", 11233, 0, $userPoolName);
@@ -26,15 +26,51 @@ $cache->AddPoolServer("127.0.0.1", 11233, 0, $userPoolName);
 // HINT: In your code, to disable cache, just comment any AddPoolServer function call
 //		That will not affect any other portion of your code, even if you use this library
 
+// Since version 2.1.0, it supports encryption:
+// To use it, just set a password to the StormCache instance like:
+$cache->SetEncryptionPassword("mypasswordforencrypt1");
+
 // Get data example
+// You can use general exception to catch all exceptions, or
+// specific exceptions to catch and react on other possibilities
 $data=NULL; //Variable initialization
 try {
-	$cache->Get("ServerData", $data);
+	$cache->Get("ServerData", $data, "POOL_NAME");
+} catch (CacheNotEnabled $ex) {
+	//Do something when cache is not enabled
+} catch (PoolNotFound $ex) {
+	//Do something when pool is not found
+	//Maybe you mispelled the pool's name or forgot to add the pool
+} catch (PoolItemNotEncrypted $ex) {
+	//Do something when item was NOT encrypted by encryption is configured
+	//This can happen if you enabled encryption while having old data
+	//In this case, you should force a new cache encrypted data
+} catch (PoolItemEncrypted $ex) {
+	//This will happen when item is encrypted BUT encryuption is disabled
+	//You will likelly set new plain data in this case
+} catch (PoolItemDecryptFailed $ex) {
+	//Data is corrupted and/or password is wrong
+} catch (PoolItemNotFound $ex) {
+	//Item was not found in cache
+}
+
+//Most of the cases, you don't need to catch all possible exceptions
+//and catch only the general one, for example
+try {
+	$cache->Get("KEY", $data, "POOL_NAME");
 } catch (Exception $ex) {
-	//Key does NOT exist in cache
+	//General exception to catch all possible exceptions
+	//Most of the cases, you don't need to catch exceptions one by one
 	//Grab data here, example, database call
 	$data=some_database_call();
-	$cache->Set("ServerData", $data, NULL, 24*3600); //Store data in default pool, without namespace during 24 hours
+	$ok=$cache->Set("ServerData", $data, NULL, 24*3600); //Store data in default pool, without namespace during 24 hours
+	//Since you caught only general exceptions, you can't know here if cache is enabled
+	//For example, to correctly rely on cache Set, you can use its return value. Example:
+	if (!$ok) {
+		//Item was not stored in cache, if item is valuable enough, you may want
+		//to force store it in database
+		some_database_call($data);
+	}
 }
 
 // To use another pool, just specify pool name in Get/Set member function
