@@ -205,7 +205,7 @@ class StormCache {
 	public function Replace($key, $data, $expire=StormCachePool::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
 		$result=FALSE;
 		$lowername=  strtolower($poolNAME);
-		if (!array_key_exists($lowername, $this->pools)) {
+		if (array_key_exists($lowername, $this->pools)) {
 			if ($this->IsEncryptionEnabled()) $data=$this->EncryptData($data);
 			$result=$this->pools["$lowername"]->Replace($key, $data, $expire);
 		}
