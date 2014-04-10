@@ -254,7 +254,7 @@ class StormCache {
 	public function Delete($key, $poolNAME=self::DefaultPoolName) {
 		$result=FALSE;
 		$lower=  strtolower($poolNAME);
-		if (!array_key_exists($lower, $this->pools)) {
+		if (array_key_exists($lower, $this->pools)) {
 			$result=$this->pools["$lower"]->Delete($key);
 		}
 		return $result;
