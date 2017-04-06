@@ -8,7 +8,7 @@
 /***********************************************************************/
 /** Author: David Carlos Manuelda **************************************/
 /** Email: StormByte@gmail.com *****************************************/
-/** Version: 3.1.0 *****************************************************/
+/** Version: 3.1.1 *****************************************************/
 /***********************************************************************/
 /** Requirements:
 	- >=PHP-5.5 (To handle exceptions that were implemented in PHP 5.5)
@@ -62,7 +62,7 @@
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	3.1.0
+ * @version	3.1.1
  */
 abstract class MemcachedPool {
 	const DefaultCacheExpiryTime	= 432000; //5 days
@@ -100,7 +100,7 @@ abstract class MemcachedPool {
 	public function __destruct() {
 		if ($this->resource!==NULL) {
 			$this->resource->quit();
-			$this->resource=NULL;$r=new memcached;
+			$this->resource=NULL;
 		}
 	}
 
@@ -126,12 +126,13 @@ abstract class MemcachedPool {
 	 */
 	public function Set($key, $data, $namespaces=NULL, $expire=self::DefaultCacheExpiryTime) {
 		$result=FALSE;
-		if (!is_null($this->resource)) {
-			$this->Lock($namespaces);
-			$result=$this->SetData($key, $data, $expire);
-			$this->AddNamespaceStoredKey($namespaces, $key);
-			$this->UnLock($namespaces);
-		}
+                $this->ReconnectIfNeeded();
+                if (!is_null($this->resource)) {
+                    $this->Lock($namespaces);
+                    $result=$this->SetData($key, $data, $expire);
+                    $this->AddNamespaceStoredKey($namespaces, $key);
+                    $this->UnLock($namespaces);
+                }
 		return $result;
 	}
 	
@@ -143,9 +144,10 @@ abstract class MemcachedPool {
 	 */
 	public function SetMulti($items, $expire=self::DefaultCacheExpiryTime) {
 		$result=FALSE;
-		if (!is_null($this->resource)) {
-			$result=$this->SetDataMulti($key, $data, $expire);
-		}
+                $this->ReconnectIfNeeded();
+                if (!is_null($this->resource)) {
+                        $result=$this->SetDataMulti($key, $data, $expire);
+                }
 		return $result;
 	}
 	
@@ -157,7 +159,11 @@ abstract class MemcachedPool {
 	 * @return bool Operation Status
 	 */
 	private function SetData($key, $data, $expire) {
-		return $this->resource->set($key, $data, (int)$expire);
+                $result = FALSE;
+                if (!is_null($this->resource)) {
+                    $result = $this->resource->set($key, $data, (int)$expire);
+                }
+                return $result;
 	}
 	
 	/**
@@ -167,7 +173,11 @@ abstract class MemcachedPool {
 	 * @return bool Operation Status
 	 */
 	private function SetDataMulti($items, $expire) {
-		return $this->resource->setMulti($items, (int)$expire);
+                $result = FALSE;
+                if (!is_null($this->resource)) {
+                        $result = $this->resource->setMulti($items, (int)$expire);
+                }
+                return $result;
 	}
 
 	/**
@@ -179,11 +189,29 @@ abstract class MemcachedPool {
 	 */
 	public function Replace($key, $data, $expire = self::DefaultCacheExpiryTime) {
 		$result=FALSE;
-		if (!is_null($this->resource)) {
-			$result=$this->resource->replace($key, $data, $expire);
-		}
+                $this->ReconnectIfNeeded();
+                if (!is_null($this->resource)) {
+                    $result = $this->resource->replace($key, $data, $expire);
+                }
 		return $result;
 	}
+        
+        /**
+	 * Sets or replace data (it does not throw any exception to improve code quality when using the lib)
+         * @since 3.1.1
+	 * @param string $key Key Key to store data in server
+	 * @param mixed $data Data Data to store (do NOT store a boolean FALSE, because it will be stored but appear as failed when get)
+	 * @param string|array|NULL $namespaces Namespace to bind data to (if applicable)
+	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
+	 * @return bool Operation Status
+	 */
+        public function SetReplace($key, $data, $namespaces = NULL, $expire = self::DefaultCacheExpiryTime) {
+                $result = $this->Replace($key, $data, $expire);
+                if (!$result) {
+                        $result = $this->Set($key, $result, $namespaces, $expire);
+                }
+                return $result;
+        }
 
 	/**
 	 * Internal function to get data from cache
@@ -191,8 +219,11 @@ abstract class MemcachedPool {
 	 * @return mixed|false FALSE on failure or data in case of success
 	 */
 	private function GetData($key) {
-		$data=$this->resource->get($key);
-		if ($data!==FALSE) $this->hits++; else $this->misses++;
+                $data = FALSE;
+                if (!is_null($this->resource)) {
+                    $data=$this->resource->get($key);
+                    if ($data!==FALSE) $this->hits++; else $this->misses++;
+                }
 		return $data;
 	}
 	
@@ -201,25 +232,24 @@ abstract class MemcachedPool {
 	 * @param string|array $namespaces
 	 */
 	public function ExpireNamespace($namespaces) {
-		if (!is_null($this->resource)) {
-			if (is_array($namespaces)) {
-				foreach ($namespaces as $namespace) {
-					$this->ExpireNamespace($namespace);
-				}
-			}
-			else if (!is_null($namespaces)) {
-				$this->Lock($namespaces);
-				$currentKeys=$this->GetData($namespaces);
-				if (!empty($currentKeys)) {
-					foreach ($currentKeys as $key => $ignored) {
-						$this->Delete($key);
-					}
-				}
-				unset($currentKeys);
-				$this->Delete($namespaces);
-				$this->UnLock($namespaces);
-			}
-		}
+                $this->ReconnectIfNeeded();
+                if (is_array($namespaces)) {
+                        foreach ($namespaces as $namespace) {
+                                $this->ExpireNamespace($namespace);
+                        }
+                }
+                else if (!is_null($namespaces)) {
+                        $this->Lock($namespaces);
+                        $currentKeys=$this->GetData($namespaces);
+                        if (!empty($currentKeys)) {
+                                foreach ($currentKeys as $key => $ignored) {
+                                        $this->Delete($key);
+                                }
+                        }
+                        unset($currentKeys);
+                        $this->Delete($namespaces);
+                        $this->UnLock($namespaces);
+                }
 	}
 	
 	/**
@@ -310,12 +340,11 @@ abstract class MemcachedPool {
 	 * @param mixed &$data Data variable to stored results (passed by reference)
 	 */
 	public function Get($key, &$data) {
-		if (!is_null($this->resource)) {
-			$tmp = $this->GetData($key);
-			if ($tmp!==FALSE) {
-				$data=$tmp;
-			}
-		}
+                $this->ReconnectIfNeeded();
+                $tmp = $this->GetData($key);
+                if ($tmp!==FALSE) {
+                        $data=$tmp;
+                }
 	}
 
 	/**
@@ -323,11 +352,8 @@ abstract class MemcachedPool {
 	 * @return bool Operation Status
 	 */
 	public function Flush() {
-		$result=FALSE;
-		if (!is_null($this->resource)) {
-			$result=$this->resource->flush();
-		}
-		return $result;
+                $this->ReconnectIfNeeded();
+		return $this->resource->flush();
 	}
 
 	/**
@@ -336,11 +362,8 @@ abstract class MemcachedPool {
 	 * @return bool Operation Status
 	 */
 	public function Delete($key) {
-		$result=FALSE;
-		if (!is_null($this->resource)) {
-			$result=$this->resource->delete($key);
-		}
-		return $result;
+                $this->ReconnectIfNeeded();
+		return $this->resource->delete($key);
 	}
 	
 	/**
@@ -349,11 +372,8 @@ abstract class MemcachedPool {
 	 * @return bool Operation Status
 	 */
 	public function DeleteMulti($keys) {
-		$result=FALSE;
-		if (!is_null($this->resource)) {
-			$result=$this->resource->deleteMulti($keys);
-		}
-		return $result;
+		$this->ReconnectIfNeeded();
+		return $this->resource->deleteMulti($keys);
 	}
 	
 	/**
@@ -363,11 +383,8 @@ abstract class MemcachedPool {
 	 * @return bool Operation Status
 	 */
 	public function Touch($key, $expire) {
-		$result=FALSE;
-		if (!is_null($this->resource)) {
-			$result=$this->resource->touch($key, (int)$expire);
-		}
-		return $result;
+		$this->ReconnectIfNeeded();
+		return $this->resource->touch($key, (int)$expire);
 	}
 	
 	/**
@@ -392,11 +409,8 @@ abstract class MemcachedPool {
 	 * @return array|null
 	 */
 	public function GetStats() {
-		$result=NULL;
-		if (!is_null($this->resource)) {
-			$result=$this->resource->getStats();
-		}
-		return $result;
+		$this->ReconnectIfNeeded();
+		return $this->resource->getStats();
 	}
 	
 	/**
@@ -422,6 +436,18 @@ abstract class MemcachedPool {
 	public function IsEnabled() {
 		return !is_null($this->resource);
 	}
+        
+        /**
+         * Reconnects memcached if needed
+         */
+        private function ReconnectIfNeeded() {
+                if ($this->resource === NULL && !empty($this->serverList)) {
+                        $this->resource = new Memcached();
+                        foreach ($this->serverList as $serverInfo) {
+                                $this->resource->addServer($serverInfo['IP'], $serverInfo['PORT'], $serverInfo['WEIGHT']);
+                        }
+                }
+        }
 }
 
 /**

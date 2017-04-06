@@ -6,8 +6,8 @@
 /***********************************************************************/
 /** Author: David Carlos Manuelda **************************************/
 /** Email: StormByte@gmail.com *****************************************/
-/** Date: 03/25/2014 ***************************************************/
-/** Version: 2.0.0 *****************************************************/
+/** Date: 04/24/2014 ***************************************************/
+/** Version: 3.1.1 *****************************************************/
 /***********************************************************************/
 /** Requirements:
 	- >=PHP-5.5 (To handle exceptions that were implemented in PHP 5.5)
@@ -63,7 +63,7 @@ require_once 'StormCacheInternals.php'; // This file is needed to get the intern
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	3.1.0
+ * @version	3.1.1
  */
 class StormCache {
 	const DefaultPoolName = "default";
@@ -212,6 +212,26 @@ class StormCache {
 		return $result;
 	}
 	
+        /**
+	 * Sets or replace data (it does not throw any exception to improve code quality when using the lib)
+         * @since 3.1.1
+	 * @param string $key Key Key to store data in server
+	 * @param mixed $data Data Data to store (do NOT store a boolean FALSE, because it will be stored but appear as failed when get)
+	 * @param string|array|NULL $namespaces Namespace to bind data to (if applicable)
+	 * @param int $expire Expire time seconds if less than 30 days or timestamp if it is greater
+	 * @param string $poolNAME Pool Name (if not specified, default pool is selected)
+	 * @return bool Operation Status
+	 */
+	public function SetReplace($key, $data, $namespaces=NULL, $expire=StormCachePool::DefaultCacheExpiryTime, $poolNAME=self::DefaultPoolName) {
+		$result=FALSE;
+		$lowername=  strtolower($poolNAME);
+		if (array_key_exists($lowername, $this->pools)) {
+			if ($this->IsEncryptionEnabled()) $data=$this->EncryptData($data);
+			$result=$this->pools["$lowername"]->Set($key, $data, $namespaces, $expire);
+		}
+		return $result;
+	}
+        
 	/**
 	 * Expires namespaces
 	 * @param string|array $namespaces

@@ -4,8 +4,8 @@
 /***********************************************************************/
 Author: David Carlos Manuelda aka StormByte
 Email: StormByte@gmail.com
-Version: 2.0.0
-Release Date: 3/25/2014
+Version: 3.1.0
+Release Date: 4/6/2016
 
 Hint:
 	If you find this library useful, and/or it saved you developing time/costs, please
