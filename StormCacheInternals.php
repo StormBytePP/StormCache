@@ -8,14 +8,14 @@
 /***********************************************************************/
 /** Author: David Carlos Manuelda **************************************/
 /** Email: StormByte@gmail.com *****************************************/
-/** Version: 2.1.0 *****************************************************/
+/** Version: 3.1.0 *****************************************************/
 /***********************************************************************/
 /** Requirements:
 	- >=PHP-5.5 (To handle exceptions that were implemented in PHP 5.5)
 	- PECL-Memcached (To make use of memcache's features, it will not
 		be required in case you don't configure any pool's server, so it is
 		safe to use the library even if PECL-Memcached is not installed. )
-	- MCrypt support (optional, for encrypting features)
+	- OpenSSL support (optional, for encrypting features)
  */
 /** License:
 	You are granted to use, modify and distribute this library in any
@@ -62,7 +62,7 @@
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 abstract class MemcachedPool {
 	const DefaultCacheExpiryTime	= 432000; //5 days
@@ -429,7 +429,7 @@ abstract class MemcachedPool {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 class PoolItemNotFound extends Exception {
 	public function __construct($keyname) {
@@ -442,7 +442,7 @@ class PoolItemNotFound extends Exception {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 class PoolItemDecryptFailed extends Exception {
 	public function __construct($keyname) {
@@ -455,7 +455,7 @@ class PoolItemDecryptFailed extends Exception {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 class PoolItemEncrypted extends Exception {
 	public function __construct($keyname) {
@@ -468,7 +468,7 @@ class PoolItemEncrypted extends Exception {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 class PoolItemNotEncrypted extends Exception {
 	public function __construct($keyname) {
@@ -481,7 +481,7 @@ class PoolItemNotEncrypted extends Exception {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 class PoolNotFound extends Exception {
 	public function __construct($poolName) {
@@ -494,7 +494,7 @@ class PoolNotFound extends Exception {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 class PoolNameConflict extends Exception {
 	public function __construct($name) {
@@ -507,7 +507,7 @@ class PoolNameConflict extends Exception {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 class PoolNoServersConfigured extends Exception {
 	public function __construct($poolName) {
@@ -520,7 +520,7 @@ class PoolNoServersConfigured extends Exception {
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 class CacheNotEnabled extends Exception {
 	public function __construct() {
@@ -529,24 +529,11 @@ class CacheNotEnabled extends Exception {
 }
 
 /**
- * Exception Class for MCrypt not installed
- *
- * @author	David Carlos Manuelda <stormbyte@gmail.com>
- * @package StormCache
- * @version	2.1.0
- */
-class MCryptNotInstalled extends Exception {
-	public function __construct() {
-		parent::__construct("MCrypt support is not installed");
-	}
-}
-
-/**
  * Class for handling StormCache Pool
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	2.1.0
+ * @version	3.1.0
  */
 final class StormCachePool extends MemcachedPool {
 	private $name;
@@ -573,6 +560,91 @@ final class StormCachePool extends MemcachedPool {
 	 */
 	public function GetName() {
 		return $this->name;
+	}
+}
+
+/**
+ * Class for handling encryption credentials
+ *
+ * @author	David Carlos Manuelda <stormbyte@gmail.com>
+ * @package StormCache
+ * @version	3.1.0
+ * @since	3.1.0
+ */
+final class StormCryptCredentials {
+	/**
+	 * Encryption password
+	 * @var string
+	 */
+	private $password;
+	
+	/**
+	 * Determines if these credentials are enabled
+	 * @var boolean
+	 */
+	private $enabled;
+	
+	/**
+	 * Constructor
+	 * @param string|NULL $password
+	 * @version 3.1.0
+	 * @since 3.1.0
+	 */
+	public function __construct($password = NULL) {
+		if (empty($password)) {
+			$this->password = "";
+			$this->enabled = false;
+		}
+		else {
+			$this->password = $password;
+			$this->enabled = true;
+		}
+	}
+	
+	/**
+	 * Gets password
+	 * @return string
+	 */
+	public function GetPassword() {
+		return $this->password;
+	}
+	
+	/**
+	 * Sets password
+	 * @param string $password
+	 */
+	public function SetPassword($password) {
+		$this->password = $password;
+	}
+	
+	/**
+	 * Enable this credentials
+	 */
+	public function Enable() {
+		$this->enabled = true;
+	}
+	
+	/**
+	 * Disable this credentials
+	 */
+	public function Disable() {
+		$this->enabled = false;
+	}
+
+	/**
+	 * Sets this credentials enabled status
+	 * @param bool $status Status to set
+	 */
+	public function SetEnabledStatus($status) {
+		$this->enabled = (bool)$status;
+	}
+	
+	/**
+	 * Checks if credentials are valid and enabled
+	 * @return bool
+	 */
+	public function IsEnabled() {
+		return $this->enabled && !empty($this->password);
 	}
 }
 ?>

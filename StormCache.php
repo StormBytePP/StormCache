@@ -14,7 +14,7 @@
 	- PECL-Memcached (To make use of memcache's features, it will not
 		be required in case you don't configure any pool's server, so it is
 		safe to use the library even if PECL-Memcached is not installed. )
-	- MCrypt support (optional, for encrypting features)
+	- OpenSSL support (optional, for encrypting features)
  */
 /** License:
 	You are granted to use, modify and distribute this library in any
@@ -63,7 +63,7 @@ require_once 'StormCacheInternals.php'; // This file is needed to get the intern
  *
  * @author	David Carlos Manuelda <stormbyte@gmail.com>
  * @package StormCache
- * @version	3.0.0
+ * @version	3.1.0
  */
 class StormCache {
 	const DefaultPoolName = "default";
@@ -84,14 +84,14 @@ class StormCache {
 	 * Encrypt password
 	 * @var string
 	 */
-	private $encryptPassword;
+	private $encryptCredentials;
 	
 	/**
 	 * Creates a new StormCache object
 	 */
 	private function __construct() {
 		$this->pools=array();
-		$this->encryptPassword="";
+		$this->encryptCredentials=new StormCryptCredentials();
 		$this->AddPool(self::DefaultPoolName);
 	}
 	
@@ -380,14 +380,14 @@ class StormCache {
 	
 	/**
 	 * Set encryption password (and implicitelly enable encryption features)
-	 * @param string $password Password for encrypting (if empty, it will NOT enable encryption)
-	 * @throws MCryptNotInstalled When MCrypt is not installed/supported
+	 * @param string $password Password for encrypting
 	 */
-	public function SetEncryptionPassword($password) {
-		if (!empty($password)) {
-			if(function_exists("mcrypt_create_iv") && function_exists("mcrypt_encrypt") && function_exists("mcrypt_decrypt"))
-				$this->encryptPassword=  substr ($password, 0, 32);
-			else throw new MCryptNotInstalled();
+	public function SetEncryptionCredentials($password) {
+		if (empty($password))
+			$this->encryptCredentials->Disable();
+		else {
+			$this->encryptCredentials->SetPassword($password);
+			$this->encryptCredentials->Enable();
 		}
 	}
 	
@@ -396,8 +396,8 @@ class StormCache {
 	 * @return bool
 	 */
 	public function IsEncryptionEnabled() {
-		return !empty($this->encryptPassword);
-	}
+		return $this->encryptCredentials->IsEnabled()
+;	}
 	
 	/**
 	 * Encrypts data
@@ -408,10 +408,10 @@ class StormCache {
 		$result=FALSE;
 		if ($this->IsEncryptionEnabled()) {
 			$serializedData=  serialize($data);
-			$IV=  mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);
+			$IV=  openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
 			$dataHash=hash("SHA256", $serializedData);
-			$cryptedData=  mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->encryptPassword, "$dataHash$serializedData", MCRYPT_MODE_CBC, $IV);
-			$result=  "ENCRYPTED".base64_encode("$IV$cryptedData");
+			$encryptedData = openssl_encrypt("$dataHash$serializedData", 'aes-256-cbc', $this->encryptCredentials->GetPassword(), 0, $IV);
+			$result=  "ENCRYPTED:".base64_encode($IV).":".base64_encode($encryptedData);
 		}
 		return $result;
 	}
@@ -424,20 +424,17 @@ class StormCache {
 	private function DecryptData($data) {
 		$result=FALSE;
 		//First we check if we have all data needed:
-		// HEADER "ENCRYPTED" size:	9
-		// IV size:					32
-		// HASH size:				64
-		if (strlen($data)>9) {
-			$data=  base64_decode(substr($data, 9));
-			if (strlen($data)>32) {
-				$IV=  substr($data, 0, 32);
-				$decryptedData=  mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->encryptPassword, substr($data, 32), MCRYPT_MODE_CBC, $IV);
-				if (strlen($decryptedData)>64) {
-					$origHash=  substr($decryptedData, 0, 64);
-					$plainData=  rtrim(substr($decryptedData, 64), chr(0));
-					if ($origHash==hash("SHA256", $plainData)) $result=  unserialize($plainData);
-				}
-			}
+		// HEADER "ENCRYPTED" size: 9
+		// IV size: 16
+		// HASH size: 64
+		$tmpArr = explode(":", $data);
+		if (count($tmpArr) == 3 && $tmpArr[0] == "ENCRYPTED") {
+			$IV = base64_decode($tmpArr[1]);
+			$decryptedRaw = openssl_decrypt(base64_decode($tmpArr[2]), 'aes-256-cbc', $this->encryptCredentials->GetPassword(), 0, $IV);
+			$decryptedHash = substr($decryptedRaw, 0, 64);
+			$decryptedData = substr($decryptedRaw, 64);
+			if (hash("SHA256", $decryptedData) == $decryptedHash)
+				$result = unserialize ($decryptedData);
 		}
 		return $result;
 	}
