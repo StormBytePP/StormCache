@@ -1,0 +1,54 @@
+# Doxyfile
+
+# Doxyfile configuration for Doxygen documentation generation
+
+# Project related configuration options
+PROJECT_NAME           = StormCache
+PROJECT_BRIEF          = "An advanced library to extend and handle PECL-Memcached."
+PROJECT_LOGO           = 
+OUTPUT_DIRECTORY       = ./docs
+CREATE_SUBDIRS         = YES
+HTML_HEADER            = 
+HTML_FOOTER            = 
+HTML_STYLESHEET        = 
+
+# Input related configuration options
+INPUT                  = ./lib README.md
+RECURSIVE              = YES
+EXCLUDE                = 
+EXCLUDE_SYMLINKS       = NO
+EXCLUDE_PATTERNS       = 
+
+# Build related configuration options
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_RTF           = NO
+GENERATE_XML           = NO
+GENERATE_MAN           = NO
+GENERATE_DOCBOOK       = NO
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+
+# Output related configuration options
+HTML_OUTPUT            = .
+HTML_FILE_EXTENSION    = .html
+HTML_DYNAMIC_SECTIONS  = YES
+
+# Miscellaneous configuration options
+QUIET                  = NO
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+
+# Additional options
+ALIASES                = 
+INPUT_ENCODING         = UTF-8
+USE_MDFILE_AS_MAINPAGE = README.md
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = NO
+SEARCH_INCLUDES        = YES
+INLINE_INHERITED_MEMB  = NO
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = ./lib
+
+# End of Doxyfile configuration
